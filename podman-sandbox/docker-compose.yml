@@ -1,0 +1,24 @@
+#
+# podman-compose up -d
+# podman exec -it local-podman-sandbox sandbox
+#
+services:
+  podman-sandbox:
+    container_name: local-podman-sandbox
+    image: local-podman-sandbox
+    build:
+        context: .
+    security_opt:
+      - seccomp=unconfined                              # 放宽安全策略（替代特权模式）
+    tmpfs: 
+      - /run                                            # 临时运行时数据
+      - /tmp                                            # 全局临时目录
+      - /var/lib/containers                             # 特权模式下的存储位置
+      - /home/podman/.local/share/containers            # 容器存储位置映射到内存中(非特权模式)
+    devices:
+      - /dev/fuse                                       # Rootless 必需设备
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro                # 挂载 cgroup
+    tty: true
+    restart: "no"
+    memswap_limit: 0                                    # 禁止swap，防止意外交换到宿主磁盘中
