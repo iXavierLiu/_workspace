@@ -1,0 +1,7 @@
+#!/bin/sh
+
+chown podman:podman -R /home/podman/.local/
+
+su - podman -c 'podman load -i /almalinux_9-base.tar'
+
+exec su - podman -c 'podman run -it --rm f6a8e68da59b bash'
