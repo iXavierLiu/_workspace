@@ -1,6 +1,7 @@
 
 # 本文档存在问题
-## *由于docker镜像并非为wsl所准备，已知对systemd/dbus有兼容问题，仅供参考*
+## *已知almalinux对wsl的systemd/dbus有兼容问题，仅供参考*
+需要提示的是，经过测试，同时只能有一个wsl容器获取dbus权限
 
 ## wsl中安装almalinux发行版
 
