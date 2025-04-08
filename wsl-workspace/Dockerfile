@@ -22,6 +22,7 @@ RUN cat >> /usr/lib/wsl/oobe <<'EOF_SCRIPT'
 exec su - $username <<'EOF_SU'
 # git config
 git config --global commit.gpgsign true
+git config --global log.showSignature true
 git config --global core.autocrlf input
 git config --global core.ignorecase false
 

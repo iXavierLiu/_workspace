@@ -31,6 +31,7 @@ user.name=Xavier Liu
 user.email=i@xavierliu.io
 user.signingkey=B72EA600!
 commit.gpgsign=true
+log.showSignature=true
 core.autocrlf=input
 core.ignorecase=false
 ```
