@@ -13,6 +13,7 @@ RUN dnf config-manager --set-enabled crb \
 		python3 python3-pip \
 		gcc g++ cmake \
 		autoconf automake libtool \
+		kmod e2fsprogs \
 	&& \
 	dnf clean all
 		
