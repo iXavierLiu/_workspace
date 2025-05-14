@@ -35,3 +35,11 @@ log.showSignature=true
 core.autocrlf=input
 core.ignorecase=false
 ```
+https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port#enabling-ssh-connections-over-https
+```shell
+# cat ~/.ssh/config
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    User git
+```
