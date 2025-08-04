@@ -34,6 +34,7 @@ commit.gpgsign=true
 log.showSignature=true
 core.autocrlf=input
 core.ignorecase=false
+init.defaultBranch=master
 ```
 https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port#enabling-ssh-connections-over-https
 ```shell
