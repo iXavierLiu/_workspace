@@ -4,44 +4,21 @@
 ## 前期准备
 参考 https://openzfs.github.io/openzfs-docs/Developer%20Resources/Building%20ZFS.html#build-options 
 ```shell
-# 安装依赖
+# 安装依赖, 或者可以尝试 sudo dnf groupinstall "Development Tools"
 sudo dnf install --skip-broken epel-release gcc make autoconf automake libtool rpm-build libtirpc-devel libblkid-devel libuuid-devel libudev-devel openssl-devel zlib-devel libaio-devel libattr-devel elfutils-libelf-devel kernel-devel-$(uname -r) python3 python3-devel python3-setuptools python3-cffi libffi-devel git ncompress libcurl-devel
-# 下载源代码，这里-e是设置代理
-wget https://github.com/openzfs/zfs/releases/download/zfs-2.3.4/zfs-2.3.4.tar.gz -e https_proxy=http://localhost:7890
-tar -zxvf zfs-2.3.4.tar.gz
-cd zfs-2.3.4/
+
+# 安装dkms
+git clone https://github.com/dell/dkms.git
+cd dkms/
+sudo make install-redhat
+
+# 安装zfs
+git clone https://github.com/openzfs/zfs.git --config "http.proxy=localhost:7890"
+cd zfs/
+git checkout zfs-2.3.4
+sh autogen.sh
+./configure; make -s -j$(nproc)
+sudo make install; sudo ldconfig; sudo depmod
+sudo modprobe zfs
 ```
 
-## 编译
-
-```shell
-# 构建configure
-./autogen.sh
-# 编译，-s指定静默(减少)输出，-j指定多线程，rpm指定编译为rpm包
-make -s -j$(nproc) rpm
-```
-
-## 简单配置集安装
-搭建一个本地源的zfs yum源仓库
-```shell
-sudo mkdir /opt/local.repo/zfs -p
-
-sudo cp *.rpm /opt/local.repo/zfs/
-
-# 生成yum元数据， sudo dnf install -y createrepo
-sudo createrepo /opt/local.repo/zfs/
-
-# 导入yum配置
-cat > /etc/yum.repos.d/local-zfs.repo <<EOF
-
-[local-zfs]
-name=Local ZFS Repo
-baseurl=file:///opt/local.repo/zfs
-enabled=1
-gpgcheck=0
-
-EOF
-
-# 
-
-```
