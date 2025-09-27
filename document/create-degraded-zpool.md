@@ -14,4 +14,6 @@ sudo zpool offline tank /dev/loop10
 sudo losetup -d /dev/loop10
 # 清理
 rm /tmp/fake.img
+# 查看
+zpool list -v
 ```
