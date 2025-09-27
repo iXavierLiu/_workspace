@@ -15,20 +15,3 @@ sudo losetup -d /dev/loop10
 # 清理
 rm /tmp/fake.img
 ```
-
-## 问题
-sudo 找不到 zfs命令
-```shell
-$ sudo zpool --version
-sudo: zpool: command not found 
-$ zpool --version
-zfs-2.3.4-1
-zfs-kmod-2.3.4-1
-$ which zpool
-/usr/local/sbin/zpool
-```
-原因是sudo 的一个安全配置项，定义了执行 sudo 命令时的环境变量 PATH，里面不包含zfs的安装路径`/usr/local/sbin/zpool`
-```shell
-echo "Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin" | sudo tee /etc/sudoer
-s.d/zfs_path
-```
