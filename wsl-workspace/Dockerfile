@@ -85,6 +85,7 @@ EOF
 
 # gpg
 gpg --keyserver keyserver.ubuntu.com --recv-keys 8D22F3FF8E0DD49C757E891AB21CCCEA038C372D
+mkdir -p $HOME/.gnupg/ && echo FCFC3AC00C20A3F8D7B897A76783C3B6562377FB >> $HOME/.gnupg/sshcontrol
 
 EOF_SU
 EOF_SCRIPT
