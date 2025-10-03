@@ -75,12 +75,12 @@ EOF
 # podman
 mkdir -p $HOME/.config/containers/registries.conf.d/
 cat >> $HOME/.config/containers/registries.conf.d/mirror.conf <<'EOF'
-\# unqualified-search-registries = ["docker.io"]
+# unqualified-search-registries = ["docker.io"]
 
-\# [[registry]]
-\# prefix = "docker.io"
-\# location = "10.67.0.110:56700"
-\# insecure = true
+# [[registry]]
+# prefix = "docker.io"
+# location = "10.67.0.110:56700"
+# insecure = true
 EOF
 
 # gpg
