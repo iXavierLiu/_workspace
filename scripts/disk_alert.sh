@@ -23,7 +23,7 @@ check_smartctl() {
         echo -e "${RED}❌ 错误：未找到smartctl命令${NC}"
         echo -e "${YELLOW}请安装smartmontools工具包：${NC}"
         echo -e "${BLUE}Ubuntu/Debian: sudo apt-get install smartmontools${NC}"
-        echo -e "${BLUE}CentOS/RHEL: sudo yum install smartmontools${NC}"
+        echo -e "${BLUE}CentOS/RHEL: sudo dnf install smartmontools${NC}"
         return 1
     fi
     return 0
