@@ -58,6 +58,10 @@ Host github.com
     Hostname ssh.github.com
     Port 443
     User git
+
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 1440
 EOF
 
 # bash_profile
