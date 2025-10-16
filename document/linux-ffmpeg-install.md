@@ -1,3 +1,11 @@
+## 新方法(2025年10月17日)
+启用 RPM Fusion
+```
+sudo dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
+sudo dnf install ffmpeg -y
+```
+
+## 旧方法
 ```shell
 # 确保已安装扩展源
 sudo dnf install epel-release -y
@@ -31,4 +39,5 @@ sudo dnf install ffmpeg-free -y
 ```
 
 CRB 仓库是什么？
+
 CRB(CodeReady Linux Builder)是一个附加仓库，包含了开发工具、编译器、库、以及其他开发相关的软件包。这些软件包通常不是由默认的 RHEL 或 CentOS 基本仓库提供，而是为开发人员提供更多的选择。启用 CRB 仓库可以让你安装和使用这些额外的软件包。
