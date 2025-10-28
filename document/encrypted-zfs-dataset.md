@@ -30,3 +30,7 @@ sudo zfs unload-key tank/encrypted
 # 装载数据集，这里的 `-l` 选项告诉 ZFS 先加载密钥，也可以用 `gpg --decrypt keyfile.bin.asc | sudo zfs load-key tank/encrypted` 进行密钥装载
 gpg --decrypt keyfile.bin.asc | sudo zfs mount tank/encrypted -l
 ```
+对于`tank/encrypted`下还有多个子数据集的话，可以这样一次进行快速挂载(zfs默认不会自动挂载加密数据集的子数据集，需要手动挨个挂载)
+```
+gpg --decrypt keyfile.bin.asc | sudo zfs load-key -r tank/encrypted && sudo zfs mount -a ; zfs list -o name,mounted
+```
