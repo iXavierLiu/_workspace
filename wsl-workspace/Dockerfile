@@ -42,7 +42,7 @@ RUN cat >> /usr/lib/wsl/oobe <<'EOF_SCRIPT'
 exec su - $username <<'EOF_SU'
 # git config
 git config --global http.proxy 127.0.0.1:7890
-git config --global user.name Xavier Liu
+git config --global user.name "Xavier Liu"
 git config --global user.email i@xavierliu.io
 git config --global user.signingkey B72EA600!
 git config --global commit.gpgsign true
