@@ -27,7 +27,7 @@ alias gpg-bye="gpg-connect-agent updatestartuptty /bye"
 # git config --global --list
 
 http.proxy=127.0.0.1:7890
-user.name=Xavier Liu
+user.name="Xavier Liu"
 user.email=i@xavierliu.io
 user.signingkey=B72EA600!
 commit.gpgsign=true
