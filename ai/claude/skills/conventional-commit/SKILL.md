@@ -64,6 +64,45 @@ description: Generate Conventional Commits 1.0.0 compliant commit messages by an
 
 ## 输出规则
 
-- **只输出 commit message 本身**，不要额外的解释、不要确认、不要 Markdown 包裹
-- 如果暂存区为空，返回 `暂存区没有变更，无法生成提交信息`
+- **用 markdown 代码块包裹 commit message** 返回，便于复制
+- 除此之外不输出任何额外解释或确认
+- 如果暂存区为空，返回 `暂存区没有变更，无法生成提交信息`（纯文本，无代码块）
 - 如果变更包含破坏性 API 修改，务必标记 `!` 或 `BREAKING CHANGE`
+
+### 输出示例
+
+#### 常规变更（feat + scope + body + footer）
+
+```markdown
+feat(users): add role-based access control to user management
+
+- Administrator and editor roles were previously indistinguishable, making
+  it impossible to enforce fine-grained permissions.
+- Introduce a `role` enum column with `admin`, `editor`, and `viewer`
+  tiers, enforced at the route middleware layer.
+```
+
+**本示例展示**: `feat` 类型、`users` 范围、祈使句描述、多段正文解释 why、多行脚注。
+
+#### Bug 修复（fix + scope + ! 破坏性变更）
+
+```markdown
+fix(db)!: change default pagination limit from 100 to 20
+
+- The previous default of 100 rows per page causes excessive database load
+  on large tables and is inconsistent with frontend page sizes.
+
+BREAKING CHANGE: `GET /v1/posts` now returns 20 items per page by default
+instead of 100. Clients relying on the old default must pass
+`?limit=100` explicitly.
+```
+
+**本示例展示**: `fix` 类型、`!` 标记破坏性变更、`BREAKING CHANGE` 脚注说明迁移指引。
+
+#### 纯文档变更（docs，无 scope、无 body）
+
+```markdown
+docs: fix typo in API authentication guide
+```
+
+**本示例展示**: 最简形式 — 无范围、无正文、无脚注，一句话描述。
