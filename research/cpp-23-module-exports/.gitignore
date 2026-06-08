@@ -1,0 +1,17 @@
+# Build directories
+build/
+install/
+examples/external-main/build/
+.cache/
+
+# IDE / editor
+.vscode/
+.idea/
+compile_commands.json
+
+# Per-user CMake presets (committed: CMakeUserPresets.json.example)
+CMakeUserPresets.json
+
+# Misc
+*.o
+*.obj

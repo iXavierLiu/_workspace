@@ -1,0 +1,191 @@
+{
+    "version": 10,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 30,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_STANDARD": "23",
+                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_CXX_EXTENSIONS": "OFF"
+            }
+        },
+        {
+            "name": "default",
+            "displayName": "Default (Ninja, Release, system compiler)",
+            "description": "Default root-project build with the system default compiler.",
+            "inherits": "base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "clang",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++"
+            }
+        },
+        {
+            "name": "gcc",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "debug",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "relwithdebinfo",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "minsizerel",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        },
+
+        {
+            "name": "clang-debug",
+            "displayName": "Clang / Ninja / Debug",
+            "description": "Recommended for development. Clang 19+ is required for C++23 modules.",
+            "inherits": [ "base", "clang", "debug" ]
+        },
+        {
+            "name": "clang-release",
+            "displayName": "Clang / Ninja / Release",
+            "description": "Recommended for release builds.",
+            "inherits": [ "base", "clang", "release" ]
+        },
+        {
+            "name": "clang-relwithdebinfo",
+            "displayName": "Clang / Ninja / RelWithDebInfo",
+            "inherits": [ "base", "clang", "relwithdebinfo" ]
+        },
+        {
+            "name": "gcc-debug",
+            "displayName": "GCC / Ninja / Debug",
+            "inherits": [ "base", "gcc", "debug" ]
+        },
+        {
+            "name": "gcc-release",
+            "displayName": "GCC / Ninja / Release",
+            "inherits": [ "base", "gcc", "release" ]
+        },
+
+        {
+            "name": "external-main",
+            "displayName": "examples/external-main (third-party consumer)",
+            "description": "Independent build of examples/external-main that consumes the installed `demo` package via find_package(). NOT a sub-project of the root. Run from the examples/external-main/ directory (or use the -S flag).",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_STANDARD": "23",
+                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_CXX_EXTENSIONS": "OFF",
+                "CMAKE_CXX_SCAN_FOR_MODULES": "ON",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_PREFIX_PATH": "${sourceDir}/../../install"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default"
+        },
+        {
+            "name": "clang-debug",
+            "configurePreset": "clang-debug"
+        },
+        {
+            "name": "clang-release",
+            "configurePreset": "clang-release"
+        },
+        {
+            "name": "gcc-debug",
+            "configurePreset": "gcc-debug"
+        },
+        {
+            "name": "gcc-release",
+            "configurePreset": "gcc-release"
+        },
+        {
+            "name": "external-main",
+            "displayName": "Build the third-party consumer",
+            "configurePreset": "external-main"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "clang-debug",
+            "configurePreset": "clang-debug",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "clang-debug",
+            "description": "Configure + build the root project with Clang/Debug.",
+            "steps": [
+                { "type": "configure", "name": "clang-debug" },
+                { "type": "build",     "name": "clang-debug" }
+            ]
+        },
+        {
+            "name": "release-pipeline",
+            "description": "Configure + build with Clang/Release. (Run `cmake --install build --prefix ./install` separately.)",
+            "steps": [
+                { "type": "configure", "name": "clang-release" },
+                { "type": "build",     "name": "clang-release" }
+            ]
+        },
+        {
+            "name": "external-main-pipeline",
+            "description": "Configure + build the third-party consumer (examples/external-main). Assumes `./install` already exists from a prior `cmake --install build`.",
+            "steps": [
+                { "type": "configure", "name": "external-main" },
+                { "type": "build",     "name": "external-main" }
+            ]
+        }
+    ]
+}
