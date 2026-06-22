@@ -6,7 +6,7 @@
 参考 https://openzfs.github.io/openzfs-docs/Developer%20Resources/Building%20ZFS.html#build-options 
 ```shell
 # 安装依赖, 或者可以尝试 sudo dnf groupinstall "Development Tools"
-sudo dnf install --skip-broken epel-release gcc make autoconf automake libtool rpm-build libtirpc-devel libblkid-devel libuuid-devel libudev-devel openssl-devel zlib-devel libaio-devel libattr-devel elfutils-libelf-devel kernel-devel-$(uname -r) python3 python3-devel python3-setuptools python3-cffi libffi-devel git ncompress libcurl-devel openssl-devel
+sudo dnf install --skip-broken epel-release gcc make autoconf automake libtool rpm-build libtirpc-devel libblkid-devel libuuid-devel libudev-devel openssl-devel zlib-devel libaio-devel libattr-devel elfutils-libelf-devel kernel-devel-$(uname -r) python3 python3-devel python3-setuptools python3-cffi libffi-devel git ncompress libcurl-devel 
 
 # 安装dkms
 git clone https://github.com/dell/dkms.git
