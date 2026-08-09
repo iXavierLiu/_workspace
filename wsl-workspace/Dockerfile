@@ -50,6 +50,7 @@ git config --global log.showSignature true
 git config --global core.autocrlf input
 git config --global core.ignorecase false
 git config --global init.defaultBranch master
+git config --global core.quotepath false
 
 # git config, use ssh with 443 port
 mkdir -p $HOME/.ssh/
