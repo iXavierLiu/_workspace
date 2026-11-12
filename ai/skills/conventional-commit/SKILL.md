@@ -1,108 +1,39 @@
 ---
 name: conventional-commit
-description: Generate Conventional Commits 1.0.0 compliant commit messages by analyzing Git staged changes (git diff --cached). Use when user asks to generate a commit message, write a git commit, or mentions "conventional commit", "commit message", "提交信息".
+description: 根据暂存区变更生成 Conventional Commits 1.0.0 提交信息，同时输出英文原文和中文翻译；不执行 git commit。当用户要求生成 commit message、写提交信息，或提到 conventional commit / 提交信息 时使用。
 ---
 
 # Conventional Commit 消息生成
 
+规范：[references/conventional-commits-v1.0.0.md](references/conventional-commits-v1.0.0.md)，细节存疑时查阅。
+
 ## 流程
 
-1. **读取暂存区** — 运行 `git diff --cached` 查看所有暂存的变更
-2. **分析变更** — 判断变更类型、范围和影响
-3. **生成消息** — 只输出最终消息，不执行 `git commit`
+1. 运行 `git diff --cached` 读取暂存变更。
+2. 按规范生成英文 commit message，并翻译一份中文版。
+3. 只输出两份消息，不执行 `git commit`。
 
-## 类型判断指南
+## 输出
 
-| 变更内容 | 类型 |
-|---|---|
-| 新功能、新接口、新端点 | `feat` |
-| Bug 修复 | `fix` |
-| 文档（README、注释、文档文件） | `docs` |
-| 代码重构（不改变行为） | `refactor` |
-| 性能优化 | `perf` |
-| 测试（添加/修改测试） | `test` |
-| 样式格式化（缩进、空格，非语义变更） | `style` |
-| 构建/依赖/CI/CD | `build` \| `ci` |
-| 杂项（配置、工具等） | `chore` |
-
-## 生成规则
-
-### 格式
-
-```
-<type>(<scope>): <简短描述>
-
-<可选正文>
-
-<可选脚注>
-```
-
-### 范围 (scope)
-
-从变更文件的路径/模块推断。例如 `src/routes/auth.ts` 变更 → `scope: auth`。
-
-### 描述 (description)
-
-- 祈使句，首字母小写，句末无句号
-- 简洁（< 72 字符优先）
-
-### 破坏性变更
-
-- 如果 API 或行为向后不兼容，在类型后加 `!`：`feat!:` 或 `feat(api)!:`
-- 脚注中添加 `BREAKING CHANGE: <描述>`
-
-### 正文 (body)
-
-- 需要额外上下文时添加（描述 why 而非 what）
-- 空行分隔描述和正文
-
-### 脚注 (footer)
-
-- `BREAKING CHANGE:` 用于破坏性变更
-- `Refs: #123` 引用 issue/PR
-- `Reviewed-by: name` 等
-
-## 输出规则
-
-- **用 markdown 代码块包裹 commit message** 返回，便于复制
-- 除此之外不输出任何额外解释或确认
-- 如果暂存区为空，返回 `暂存区没有变更，无法生成提交信息`（纯文本，无代码块）
-- 如果变更包含破坏性 API 修改，务必标记 `!` 或 `BREAKING CHANGE`
-
-### 输出示例
-
-#### 常规变更（feat + scope + body + footer）
+- 依次输出两份消息，各用 markdown 代码块包裹：先英文原文，后中文翻译；两份消息之间用 `---` 分隔。
+- 中文版保留 `type(scope)`、`!`、`BREAKING CHANGE:` 等规范关键字，只翻译描述、正文和脚注内容。
+- 正文使用 `- ` 列表项，每项一行。
+- 暂存区为空时，仅返回：`暂存区没有变更，无法生成提交信息`
 
 ```markdown
-feat(users): add role-based access control to user management
+feat(auth): add password reset via email
 
-- Administrator and editor roles were previously indistinguishable, making
-  it impossible to enforce fine-grained permissions.
-- Introduce a `role` enum column with `admin`, `editor`, and `viewer`
-  tiers, enforced at the route middleware layer.
+- Send a time-limited reset link instead of a temporary password.
+
+BREAKING CHANGE: `POST /login` no longer accepts the `temp_password` field.
 ```
 
-**本示例展示**: `feat` 类型、`users` 范围、祈使句描述、多段正文解释 why、多行脚注。
-
-#### Bug 修复（fix + scope + ! 破坏性变更）
+---
 
 ```markdown
-fix(db)!: change default pagination limit from 100 to 20
+feat(auth): 支持通过邮件重置密码
 
-- The previous default of 100 rows per page causes excessive database load
-  on large tables and is inconsistent with frontend page sizes.
+- 使用有时效的重置链接替代临时密码。
 
-BREAKING CHANGE: `GET /v1/posts` now returns 20 items per page by default
-instead of 100. Clients relying on the old default must pass
-`?limit=100` explicitly.
+BREAKING CHANGE: `POST /login` 不再接受 `temp_password` 字段。
 ```
-
-**本示例展示**: `fix` 类型、`!` 标记破坏性变更、`BREAKING CHANGE` 脚注说明迁移指引。
-
-#### 纯文档变更（docs，无 scope、无 body）
-
-```markdown
-docs: fix typo in API authentication guide
-```
-
-**本示例展示**: 最简形式 — 无范围、无正文、无脚注，一句话描述。
